@@ -34,7 +34,7 @@ def register_new_user():
 def get_rating():
     try:
         all_players = db.session.query(Player).order_by(Player.score.desc()).all()
-        response = jsonify(list({"name": player.name, "score": player.score} for player in all_players))
+        response = list({"name": player.name, "score": player.score} for player in all_players)
 
         return jsonify({"status": 0, "players": response})
 
