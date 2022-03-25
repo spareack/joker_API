@@ -33,7 +33,7 @@ def register_new_user():
 @app.route("/get_rating", methods=['POST', 'GET'])
 def get_rating():
     try:
-        all_players = db.session.query(Player).order_by(Player.score.desc()).all()
+        all_players = db.session.query(Player).order_by(Player.score).all()
         response = list({"name": player.name, "score": player.score} for player in all_players)
 
         return jsonify({"status": 0, "players": response})
