@@ -11,9 +11,9 @@ db = SQLAlchemy(app)
 
 class Player(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    actor_num = db.Column(db.Integer)
+    actor_num = db.Column(db.String)
     name = db.Column(db.String, default="Unknown")
-    score = db.Column(db.String, default=0)
+    score = db.Column(db.Integer, default=0)
 
 
 @app.route("/register_new_user", methods=['POST'])
