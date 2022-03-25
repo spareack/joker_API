@@ -50,7 +50,7 @@ def change_rating():
 
         for player_data in players_list:
             player = db.session.query(Player).filter_by(actor_num=player_data['actor_num']).first_or_404()
-            player.score += player['score_change']
+            player.score += player_data['score_change']
 
         db.session.commit()
         return jsonify({"status": 0})
