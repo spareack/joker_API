@@ -2,11 +2,11 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
 
-application = Flask(__name__)
-application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///baza.db'
-application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///baza.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(application)
+db = SQLAlchemy(app)
 
 
 class Player(db.Model):
@@ -16,7 +16,7 @@ class Player(db.Model):
     score = db.Column(db.String, default=0)
 
 
-@application.route("/register_new_user", methods=['POST'])
+@app.route("/register_new_user", methods=['POST'])
 def register_new_user():
     try:
         data = request.json
@@ -30,7 +30,7 @@ def register_new_user():
         return jsonify({"status": 1, "info": str(e)})
 
 
-@application.route("/get_rating", methods=['POST', 'GET'])
+@app.route("/get_rating", methods=['POST', 'GET'])
 def get_rating():
     try:
         all_players = db.session.query(Player).order_by(Player.score.desc()).all()
@@ -42,7 +42,7 @@ def get_rating():
         return jsonify({"status": 1, "info": str(e)})
 
 
-@application.route("/change_rating", methods=['POST'])
+@app.route("/change_rating", methods=['POST'])
 def change_rating():
     try:
         data = request.json
@@ -59,7 +59,7 @@ def change_rating():
         return jsonify({"status": 1, "info": str(e)})
 
 
-@application.route("/change_name", methods=['POST'])
+@app.route("/change_name", methods=['POST'])
 def change_name():
     try:
         data = request.json
