@@ -23,7 +23,7 @@ class Clan(db.Model):
     description = db.Column(db.String, default="None")
 
     def get_clan_score(self):
-        all_members = db.session.query(Player).filter_by(clan_id=id).all()
+        all_members = db.session.query(Player).filter_by(clan_id=self.id).all()
         return sum(member.score for member in all_members)
 
 
