@@ -14,6 +14,46 @@ class Player(db.Model):
     actor_num = db.Column(db.String)
     name = db.Column(db.String, default="Unknown")
     score = db.Column(db.Integer, default=0)
+    clan_id = db.Column(db.Integer, default=-1)
+
+
+class Clan(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, default="Unknown_clan")
+    description = db.Column(db.String, default="None")
+
+    def get_clan_score(self):
+        all_members = db.session.query(Player).filter_by(clan_id=id).all()
+        return sum(member.score for member in all_members)
+
+
+@app.route("/get_clan", methods=['POST'])
+def get_clan():
+    try:
+        data = request.json
+        clan = db.session.query(Clan).filter_by(id=data['clan_id']).first_or_404()
+
+        return jsonify({"status": 0,
+                        "clan_name": clan.name,
+                        "description": clan.description,
+                        "clan_score": clan.get_clan_score()})
+
+    except Exception as e:
+        return jsonify({"status": 1, "info": str(e)})
+
+
+@app.route("/join_clan", methods=['POST'])
+def join_clan():
+    try:
+        data = request.json
+        player = db.session.query(Player).filter_by(actor_num=data['actor_num']).first_or_404()
+        player.clan_id = data['clan_id']
+        db.session.commit()
+
+        return jsonify({"status": 0})
+
+    except Exception as e:
+        return jsonify({"status": 1, "info": str(e)})
 
 
 @app.route("/register_new_user", methods=['POST'])
