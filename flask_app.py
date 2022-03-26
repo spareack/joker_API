@@ -66,9 +66,7 @@ def join_clan():
 
 
 @app.route("/create_clan", methods=['POST'])
-def join_clan():
-    return jsonify({"status": 1})
-
+def create_clan():
     try:
         data = request.json
         player = db.session.query(Player).filter_by(actor_num=data['actor_num']).first_or_404()
