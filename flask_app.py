@@ -67,7 +67,7 @@ def join_clan():
 
 @app.route("/create_clan", methods=['POST'])
 def join_clan():
-    return jsonify({"status": 1, "info": str(e)})
+    return jsonify({"status": 1})
 
     try:
         data = request.json
