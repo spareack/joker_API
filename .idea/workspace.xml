@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bda6136a-bc69-44b2-b729-493f5edbd76e" name="Default Changelist" comment="" />
+    <list default="true" id="bda6136a-bc69-44b2-b729-493f5edbd76e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baza.db" beforeDir="false" afterPath="$PROJECT_DIR$/baza.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flask_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/flask_app.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,10 +17,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/flask_app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="33" column="64" selection-start-line="33" selection-start-column="57" selection-end-line="33" selection-end-column="64" />
+            <state relative-caret-position="99">
+              <caret line="67" column="24" selection-start-line="67" selection-start-column="13" selection-end-line="67" selection-end-column="24" />
               <folding>
-                <element signature="e#0#58#0" expanded="true" />
+                <element signature="e#0#41#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -131,10 +135,10 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/flask_app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="33" column="64" selection-start-line="33" selection-start-column="57" selection-end-line="33" selection-end-column="64" />
+        <state relative-caret-position="99">
+          <caret line="67" column="24" selection-start-line="67" selection-start-column="13" selection-end-line="67" selection-end-column="24" />
           <folding>
-            <element signature="e#0#58#0" expanded="true" />
+            <element signature="e#0#41#0" expanded="true" />
           </folding>
         </state>
       </provider>

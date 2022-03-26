@@ -26,6 +26,13 @@ class Clan(db.Model):
         all_members = db.session.query(Player).filter_by(clan_id=self.id).all()
         return sum(member.score for member in all_members)
 
+    def get_members(self):
+        all_members = db.session.query(Player).filter_by(clan_id=self.id).all()
+
+        return list({"name": member.name,
+                     "score": member.score,
+                     "actor_num": member.actor_num} for member in all_members)
+
 
 @app.route("/get_clan", methods=['POST'])
 def get_clan():
@@ -36,7 +43,8 @@ def get_clan():
         return jsonify({"status": 0,
                         "clan_name": clan.name,
                         "description": clan.description,
-                        "clan_score": clan.get_clan_score()})
+                        "clan_score": clan.get_clan_score(),
+                        "members": clan.get_members()})
 
     except Exception as e:
         return jsonify({"status": 1, "info": str(e) + traceback.format_exc()})
@@ -46,11 +54,30 @@ def get_clan():
 def join_clan():
     try:
         data = request.json
+
         player = db.session.query(Player).filter_by(actor_num=data['actor_num']).first_or_404()
         player.clan_id = data['clan_id']
         db.session.commit()
 
-        return jsonify({"status": 0})
+        return jsonify({"status": 0, "clan_id": player.clan_id})
+
+    except Exception as e:
+        return jsonify({"status": 1, "info": str(e)})
+
+
+@app.route("/create_clan", methods=['POST'])
+def join_clan():
+    try:
+        data = request.json
+        player = db.session.query(Player).filter_by(actor_num=data['actor_num']).first_or_404()
+
+        clan = Clan(name=data['clan_name'], description=data['description'])
+        db.session.commit()
+
+        player.clan_id = clan.id
+        db.session.commit()
+
+        return jsonify({"status": 0, "clan_id": player.clan_id})
 
     except Exception as e:
         return jsonify({"status": 1, "info": str(e)})
