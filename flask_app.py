@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-
+import traceback
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///baza.db'
@@ -39,7 +39,7 @@ def get_clan():
                         "clan_score": clan.get_clan_score()})
 
     except Exception as e:
-        return jsonify({"status": 1, "info": str(e)})
+        return jsonify({"status": 1, "info": str(e) + traceback.format_exc()})
 
 
 @app.route("/join_clan", methods=['POST'])
