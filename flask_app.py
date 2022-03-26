@@ -72,6 +72,7 @@ def create_clan():
         player = db.session.query(Player).filter_by(actor_num=data['actor_num']).first_or_404()
 
         clan = Clan(name=data['clan_name'], description=data['description'])
+        db.session.add(clan)
         db.session.commit()
 
         player.clan_id = clan.id
