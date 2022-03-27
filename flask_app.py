@@ -110,11 +110,14 @@ def create_clan():
 def register_new_user():
     try:
         data = request.json
-        player = Player(name=data['name'], actor_num=data['actor_num'])
-        db.session.add(player)
-        db.session.commit()
+        if db.session.query(Player).filte_by(actor_num=data['actor_num']).count > 0:
+            return jsonify({"status": 2, "info": "player already exist!"})
 
-        return jsonify({"status": 0})
+        else:
+            player = Player(name=data['name'], actor_num=data['actor_num'])
+            db.session.add(player)
+            db.session.commit()
+            return jsonify({"status": 0})
 
     except Exception as e:
         return jsonify({"status": 1, "info": str(e)})
