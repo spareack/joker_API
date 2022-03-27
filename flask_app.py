@@ -110,7 +110,7 @@ def create_clan():
 def register_new_user():
     try:
         data = request.json
-        if db.session.query(Player).filte_by(actor_num=data['actor_num']).count > 0:
+        if db.session.query(Player).filter_by(actor_num=data['actor_num']).count > 0:
             return jsonify({"status": 2, "info": "player already exist!"})
 
         else:
