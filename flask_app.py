@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+
 import traceback
+import json
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///baza.db'
@@ -21,6 +23,7 @@ class Clan(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, default="Unknown_clan")
     description = db.Column(db.String, default="None")
+    messages_data = db.Column(db.String, default="[]")
 
     def get_clan_score(self):
         all_members = db.session.query(Player).filter_by(clan_id=self.id).all()
@@ -34,6 +37,24 @@ class Clan(db.Model):
                      "actor_num": member.actor_num} for member in all_members)
 
 
+@app.route("/save_clan_message", methods=['POST'])
+def create_clan():
+    try:
+        data = request.json
+        clan = db.session.query(Clan).filter_by(id=data['clan_id']).first_or_404()
+
+        messages = json.loads(clan.messages_data)
+        messages.append({'sender': data['sender'], 'text': data['text']})
+
+        clan.messages_data = json.dumps(messages)
+        db.session.commit()
+
+        return jsonify({"status": 0})
+
+    except Exception as e:
+        return jsonify({"status": 1, "info": str(e)})
+
+
 @app.route("/get_clan", methods=['POST'])
 def get_clan():
     try:
@@ -44,7 +65,8 @@ def get_clan():
                         "clan_name": clan.name,
                         "description": clan.description,
                         "clan_score": clan.get_clan_score(),
-                        "members": clan.get_members()})
+                        "members": clan.get_members(),
+                        "messages_data": json.loads(clan.messages_data)})
 
     except Exception as e:
         return jsonify({"status": 1, "info": str(e) + traceback.format_exc()})
@@ -81,7 +103,7 @@ def create_clan():
         return jsonify({"status": 0, "clan_id": player.clan_id})
 
     except Exception as e:
-        return jsonify({"status": 1, "info": str(e)})
+        return jsonify({"status": 1, "info": str(e) + traceback.format_exc()})
 
 
 @app.route("/register_new_user", methods=['POST'])
@@ -102,7 +124,10 @@ def register_new_user():
 def get_rating():
     try:
         all_players = db.session.query(Player).order_by(Player.score.desc()).all()
-        response = list({"name": player.name, "score": player.score} for player in all_players)
+        response = list({"name": player.name,
+                         "score": player.score,
+                         "clan_id": player.clan_id,
+                         "actor_num": player.actor_num} for player in all_players)
 
         return jsonify({"status": 0, "players": response})
 
