@@ -38,7 +38,7 @@ class Clan(db.Model):
 
 
 @app.route("/save_clan_message", methods=['POST'])
-def create_clan():
+def save_clan_message():
     try:
         data = request.json
         clan = db.session.query(Clan).filter_by(id=data['clan_id']).first_or_404()
