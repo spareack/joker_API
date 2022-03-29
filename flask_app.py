@@ -23,7 +23,6 @@ class Clan(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, default="Unknown_clan")
     description = db.Column(db.String, default="None")
-    messages_data = db.Column(db.String, default="[]")
 
     def get_clan_score(self):
         all_members = db.session.query(Player).filter_by(clan_id=self.id).all()
@@ -37,24 +36,6 @@ class Clan(db.Model):
                      "actor_num": member.actor_num} for member in all_members)
 
 
-@app.route("/save_clan_message", methods=['POST'])
-def save_clan_message():
-    try:
-        data = request.json
-        clan = db.session.query(Clan).filter_by(id=data['clan_id']).first_or_404()
-
-        messages = json.loads(clan.messages_data)
-        messages.append({'sender': data['sender'], 'text': data['text']})
-
-        clan.messages_data = json.dumps(messages)
-        db.session.commit()
-
-        return jsonify({"status": 0})
-
-    except Exception as e:
-        return jsonify({"status": 1, "info": str(e)})
-
-
 @app.route("/get_clan", methods=['POST'])
 def get_clan():
     try:
@@ -65,8 +46,7 @@ def get_clan():
                         "clan_name": clan.name,
                         "description": clan.description,
                         "clan_score": clan.get_clan_score(),
-                        "members": clan.get_members(),
-                        "messages_data": json.loads(clan.messages_data)})
+                        "members": clan.get_members()})
 
     except Exception as e:
         return jsonify({"status": 1, "info": str(e) + traceback.format_exc()})
